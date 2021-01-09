@@ -16,9 +16,10 @@ def home():
         team = request.args['team']
     except:
         return 'Please use team query to query scores'
-
-    if team.lower() not in teams:
-        return 'Invalid Team name:.'+'Valid team names are:\n'+'"ATL","BKN","BOS","CHA","CHI","CLE","DAL","DEN","DET","GSW","HOU","IND","LAC","LAL","MEM","MIA","MIL","MIN","NOP","NYK","OKC","ORL","PHI","PHX","POR","SAC","SAS","TOR","UTA","WAS"\n'+'Or "all" to get all of today\'s games.'
+        
+    team = team.lower()
+    if team not in teams:
+        return 'Invalid Team name.'+'Valid team names are:\n'+'"ATL","BKN","BOS","CHA","CHI","CLE","DAL","DEN","DET","GSW","HOU","IND","LAC","LAL","MEM","MIA","MIL","MIN","NOP","NYK","OKC","ORL","PHI","PHX","POR","SAC","SAS","TOR","UTA","WAS"\n'+'Or "all" to get all of today\'s games.'
 
     try:
         my_url = "https://old.reddit.com/r/nba/"

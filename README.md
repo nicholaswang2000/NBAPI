@@ -12,17 +12,7 @@
 
 ## About The Project
 
-There are many great README templates available on GitHub, however, I didn't find one that really suit my needs so I created this enhanced one. I want to create a README template so amazing that it'll be the last one you ever need -- I think this is it.
-
-Here's why:
-
-- Your time should be focused on creating something amazing. A project that solves a problem and helps others
-- You shouldn't be doing the same tasks over and over like creating a README from scratch
-- You should element DRY principles to the rest of your life :smile:
-
-Of course, no one template will serve all projects since your needs may be different. So I'll be adding more in the near future. You may also suggest changes by forking this repo and creating a pull request or opening an issue. Thanks to all the people have have contributed to expanding this template!
-
-A list of commonly used resources that I find helpful are listed in the acknowledgements.
+Here's a free API for you to use to retrieve live scores for any of today's NBA games. Note that you'll only be able to request every 5-10 seconds to avoid server overload. You might notice that the API sometimes is slow to update and only changes after 30 seconds. This is completely normal, as it uses web scraping on unofficial third party websites to get live stats. Currently, this API is dependent on r/nba score tally on the header portion of the subreddit. Let me know if there is a better alternative.
 
 ## Usage
 
@@ -43,7 +33,7 @@ These will return team1, team2, team1's score, team2's score, and the time left 
 
 1. Invalid Team name
 
-Make sure to only use the following team names to avoid this error: "ATL","BKN","BOS","CHA","CHI","CLE","DAL","DEN","DET","GSW","HOU","IND","LAC","LAL","MEM","MIA","MIL","MIN","NOP","NYK","OKC","ORL","PHI","PHX","POR","SAC","SAS","TOR","UTA","WAS" or "all" for all teams.
+Make sure to only use the following team names to avoid this error: ATL, BKN, BOS, CHA, CHI, CLE, DAL, DEN, DET, GSW, HOU, IND, LAC, LAL, MEM, MIA, MIL, MIN, NOP, NYK, OKC, ORL, PHI, PHX, POR, SAC, SAS, TOR, UTA, WAS or "all" for all teams. (the letters are not case-sensitive)
 
 2. Please use team query to query scores
 
@@ -61,7 +51,7 @@ Simply means the team you are looking for isn't playing. You probably want to ha
 
 - [Flask](https://flask.palletsprojects.com/en/1.1.x/)
 - [r/NBA](https://www.reddit.com/r/nba)
-- [BeautifulSoup](https://pypi.org/project/beautifulsoup4/)
+- [BeautifulSoup4](https://pypi.org/project/beautifulsoup4/)
 
 <!-- GETTING STARTED -->
 

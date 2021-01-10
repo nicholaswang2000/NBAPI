@@ -26,7 +26,36 @@ A list of commonly used resources that I find helpful are listed in the acknowle
 
 ## Usage
 
-NBAPI
+The API can handle several query types: you can either get all the live games for the day or the game that is being played by a specific team for that day.
+
+- Get all the games being played today
+  ```sh
+  https://nbscrape.herokuapp.com/?team=all
+  ```
+- Get the live stats on the Charlotte Hornets game (if they're playing today)
+  ```sh
+  https://nbscrape.herokuapp.com/?team=cha
+  ```
+
+These will return team1, team2, team1's score, team2's score, and the time left in the game in the form of an object that you can access contents of via variable "team1", "team2", "team1_score", "team2_score", and "timeLeft". If timeLeft is "FINAL", the game is over. If the game has not yet started but will start later in the day, timeLeft will provide the starting time of the game.
+
+### Common Errors
+
+1. Invalid Team name
+
+Make sure to only use the following team names to avoid this error: "ATL","BKN","BOS","CHA","CHI","CLE","DAL","DEN","DET","GSW","HOU","IND","LAC","LAL","MEM","MIA","MIL","MIN","NOP","NYK","OKC","ORL","PHI","PHX","POR","SAC","SAS","TOR","UTA","WAS" or "all" for all teams.
+
+2. Please use team query to query scores
+
+This means most likely that you didn't give a team query to the server. Please make sure to use the template of "https://nbscrape.herokuapp.com/?team=***" to get a team's score.
+
+3. Too many requests - try again later
+
+Please do not spam the server with requests every second. The server will be able to handle your requests every 5-10 seconds. Please consider this when using this API.
+
+4. \*\*\* is not playing today
+
+Simply means the team you are looking for isn't playing. You probably want to handle this on your side or look for a team that is.
 
 ### Built With
 

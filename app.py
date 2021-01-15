@@ -65,8 +65,8 @@ def home():
             else:
                 team1 = table[0].next_element
                 team2 = table[1].next_element
-                team1_score = "N/A"
-                team2_score = "N/A"
+                team1_score = "-"
+                team2_score = "-"
                 timeLeft = title.next_element.next_element.next_element.next_element.findNextSibling(text=True)
             game = Game(team1, team2, team1_score, team2_score, timeLeft)
             game_json = json.dumps(game.__dict__)
@@ -99,5 +99,14 @@ def updateFirestore(team, playing, homeScore, oppScore, opponent, timeLeft):
 
 @app.route('/all', methods=['GET'])
 def all():
-    print("Hi")
-    return "Hi"
+    users_ref = db.collection('teams')
+    docs = users_ref.stream()
+
+    allTeamData = []
+    for doc in docs:
+        teamData = doc.to_dict()
+        game = Game(doc.id.upper(), teamData['opponent'].upper(), teamData['homeScore'], teamData['oppScore'], teamData['timeLeft'])
+        game_json = json.dumps(game.__dict__)
+        allTeamData.append(game_json)
+    
+    return json.dumps(allTeamData)

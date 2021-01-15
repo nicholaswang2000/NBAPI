@@ -34,7 +34,18 @@ def home():
         page_html = uClient.read()
         uClient.close()
     except:
-        return "Too many requests - try again later (every 5-10 seconds)"
+        users_ref = db.collection('teams')
+        docs = users_ref.stream()
+
+        teamData = {}
+        for doc in docs:
+            if team.lower() == doc.id:
+                teamData = doc.to_dict()
+                break
+
+        game = Game(team.upper(), teamData['opponent'].upper(), teamData['homeScore'], teamData['oppScore'], teamData['timeLeft'])
+        game_json = json.dumps(game.__dict__)
+        return game_json
 
     page_soup = soup(page_html, "html.parser")
     titlebox_soup = page_soup.find("div",{"class":"usertext-body may-blank-within md-container"})
@@ -69,11 +80,13 @@ def home():
 
             titles.append(game_json)
     updateFirestore(team, False, "-", "-", "-", "-")
-    return team + ' is not playing today. Please enter another team or check back tomorrow.'
+
+    game = Game(team, "-", "-", "-", "-")
+    game_json = json.dumps(game.__dict__)
+    return game_json
 
 
 def updateFirestore(team, playing, homeScore, oppScore, opponent, timeLeft):
-    print(team)
     doc_ref = db.collection('teams').document(team)
     doc_ref.set({
         'homeScore': homeScore,

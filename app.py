@@ -1,12 +1,19 @@
 import flask
 from flask import request
 import json
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import firestore
 from bs4 import BeautifulSoup as soup
 from urllib.request import urlopen
 from bracket import Game
 
+cred = credentials.Certificate("serviceAccountKey.json")
+firebase_admin.initialize_app(cred)
+db = firestore.client()
+
 app = flask.Flask(__name__)
-teams = ["all","atl","bkn","bos","cha","chi","cle","dal","den","det","gsw","hou","ind","lac","lal","mem","mia","mil","min","nop","nyk","okc","orl","phi","phx","por","sac","sas","tor","uta","was"]
+teams = ["atl","bkn","bos","cha","chi","cle","dal","den","det","gsw","hou","ind","lac","lal","mem","mia","mil","min","nop","nyk","okc","orl","phi","phx","por","sac","sas","tor","uta","was"]
 
 @app.route('/', methods=['GET'])
 def home():
@@ -28,6 +35,7 @@ def home():
         uClient.close()
     except:
         return "Too many requests - try again later (every 5-10 seconds)"
+
     page_soup = soup(page_html, "html.parser")
     titlebox_soup = page_soup.find("div",{"class":"usertext-body may-blank-within md-container"})
     titlebox = titlebox_soup.find("div", { "class" : "md" }).blockquote.ul
@@ -51,11 +59,26 @@ def home():
                 timeLeft = title.next_element.next_element.next_element.next_element.findNextSibling(text=True)
             game = Game(team1, team2, team1_score, team2_score, timeLeft)
             game_json = json.dumps(game.__dict__)
-            if team == team1.lower() or team == team2.lower():
+
+            if team == team1.lower():
+                updateFirestore(team, True, team1_score, team2_score, team2, timeLeft)
                 return game_json
+            elif team == team2.lower():
+                updateFirestore(team, True, team2_score, team1_score, team1, timeLeft)
+                return game_json
+
             titles.append(game_json)
-    if team == "all":
-        titles_json = json.dumps(titles)
-        return titles_json
-    else:
-        return team + ' is not playing today. Please enter another team or check back tomorrow.'
+    updateFirestore(team, False, "-", "-", "-", "-")
+    return team + ' is not playing today. Please enter another team or check back tomorrow.'
+
+
+def updateFirestore(team, playing, homeScore, oppScore, opponent, timeLeft):
+    print(team)
+    doc_ref = db.collection('teams').document(team)
+    doc_ref.set({
+        'homeScore': homeScore,
+        'oppScore': oppScore,
+        'opponent': opponent,
+        'playing': playing,
+        'timeLeft': timeLeft
+    })

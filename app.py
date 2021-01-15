@@ -95,3 +95,9 @@ def updateFirestore(team, playing, homeScore, oppScore, opponent, timeLeft):
         'playing': playing,
         'timeLeft': timeLeft
     })
+
+
+@app.route('/all', methods=['GET'])
+def all():
+    print("Hi")
+    return "Hi"

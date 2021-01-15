@@ -8,12 +8,12 @@ from bs4 import BeautifulSoup as soup
 from urllib.request import urlopen
 from bracket import Game
 
+app = flask.Flask(__name__)
+teams = ["atl","bkn","bos","cha","chi","cle","dal","den","det","gsw","hou","ind","lac","lal","mem","mia","mil","min","nop","nyk","okc","orl","phi","phx","por","sac","sas","tor","uta","was"]
+
 cred = credentials.Certificate("serviceAccountKey.json")
 firebase_admin.initialize_app(cred)
 db = firestore.client()
-
-app = flask.Flask(__name__)
-teams = ["atl","bkn","bos","cha","chi","cle","dal","den","det","gsw","hou","ind","lac","lal","mem","mia","mil","min","nop","nyk","okc","orl","phi","phx","por","sac","sas","tor","uta","was"]
 
 @app.route('/', methods=['GET'])
 def home():
